@@ -49,16 +49,17 @@ fn main() {
         match _events {
             Ok(evts) => {
                 for evr in &evts {
-                    println!("decoded: phase {:?} event {:?}", evr.phase, evr.event);
+                    println!("decoded: {:?} {:?}", evr.phase, evr.event);
                     match &evr.event {
                         Event::balances(be) => {
-                            println!(">>>>>>>>>> balances event: {:?}", be);
+                            println!(">>>>>>>>>> balances event:{:?}\n", be);
                             match &be {
                                 balances::RawEvent::Transfer(transactor, dest, value, fee) => {
                                     println!("Transactor: {:?}", transactor);
                                     println!("Destination: {:?}", dest);
                                     println!("Value: {:?}", value);
                                     println!("Fee: {:?}", fee);
+                                    return;
                                 }
                                 _ => {
                                     debug!("ignoring unsupported balances event");
