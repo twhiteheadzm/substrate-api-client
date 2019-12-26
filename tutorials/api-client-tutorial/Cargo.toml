@@ -11,9 +11,22 @@ codec = { package = "parity-scale-codec", features = ["derive"], version = "1.0.
 [dependencies.primitives]
 git = "https://github.com/paritytech/substrate"
 rev = "3bf9540e72df5ecb3955845764dfee7dcdbb26b5"
-package = "substrate-primitives"
+package = "sp-core"
 
 [dependencies.keyring]
 git = "https://github.com/paritytech/substrate"
 rev = "3bf9540e72df5ecb3955845764dfee7dcdbb26b5"
-package = "substrate-keyring"
+package = "sp-keyring"
+
+[dependencies.system]
+git = "https://github.com/paritytech/substrate"
+rev = "3bf9540e72df5ecb3955845764dfee7dcdbb26b5"
+package = "palette-system"
+default-features=false
+
+
+[dependencies.identity]
+path = "../../../addax/identity"
+
+[dependencies.addax-runtime]
+path = "../../../addax/runtime"

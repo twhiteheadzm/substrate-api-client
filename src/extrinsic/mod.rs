@@ -60,7 +60,7 @@ macro_rules! compose_call {
 /// * 'signer' - AccountKey that is used to sign the extrinsic.
 /// * 'call' - call as returned by the compose_call! macro or via substrate's call enums.
 /// * 'nonce' - signer's account nonce: u32
-/// * 'genesis_hash' - sr-primitives::Hash256/[u8; 32].
+/// * 'genesis_hash' - sp-runtime::Hash256/[u8; 32].
 /// * 'runtime_spec_version' - RuntimeVersion.spec_version/u32
 #[macro_export]
 macro_rules! compose_extrinsic_offline {

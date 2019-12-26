@@ -15,9 +15,10 @@
 
 use codec::{Decode, Encode};
 use keyring::AccountKeyring;
-
+use addax_runtime::{ Event};
 use primitives::crypto::Pair;
-
+use primitives::H256 as Hash;
+use std::sync::mpsc::{channel, Receiver};
 use substrate_api_client::{
     Api,
     compose_extrinsic,
@@ -25,49 +26,98 @@ use substrate_api_client::{
     utils::{hexstr_to_u64, hexstr_to_vec}
 };
 
-#[derive(Encode, Decode, Debug)]
-struct Kitty {
-    id: [u8; 32],
-    price: u128,
-}
-
-fn main() {
-    let url = "127.0.0.1:9944";
-
+fn main() {   
     let signer = AccountKeyring::Alice.pair();
-
-    let api = Api::new(format!("ws://{}", url))
+    let api = Api::new(format!("ws://127.0.0.1:9944"))
         .set_signer(signer.clone());
 
-    let xt: UncheckedExtrinsicV3<_> = compose_extrinsic!(
+    let xt: UncheckedExtrinsicV4<_> = compose_extrinsic!(
         api.clone(),
-        "KittyModule",
-        "create_kitty",
-        10 as u128
+        "Identity",
+        "test_extrinsic"
     );
 
     println!("[+] Extrinsic: {:?}\n", xt);
 
+    let (events_in, events_out) = channel();
+    api.subscribe_events(events_in.clone());
+  
+
     let tx_hash = api.send_extrinsic(xt.hex_encode()).unwrap();
     println!("[+] Transaction got finalized. Hash: {:?}\n", tx_hash);
 
+    let hash: Hash = subscribe_to_extrinsic_created_event(
+        &events_out,        
+    );
+
     // get the index at which Alice's Kitty resides. Alternatively, we could listen to the StoredKitty
     // event similar to what we do in the example_contract.
-    let res_str = api.get_storage("Kitty",
-                                  "KittyIndex",
+    let nonce = api.get_storage("Identity",
+                                  "nonce",
                                   Some(signer.public().encode())).unwrap();
 
-    let index = hexstr_to_u64(res_str).unwrap();
-    println!("[+] Alice's Kitty is at index : {}\n", index);
+    // let index = hexstr_to_u64(res_str).unwrap();
+    println!("[+] Nonce : {}\n", nonce);
 
     // get the Kitty
-    let res_str = api.get_storage("Kitty",
-                                  "Kitties",
-                                  Some(index.encode())).unwrap();
+    // let res_str = api.get_storage("Identity",
+    //                               "Kitties",
+    //                               Some(index.encode())).unwrap();
 
-    let res_vec = hexstr_to_vec(res_str).unwrap();
+    // let res_vec = hexstr_to_vec(res_str).unwrap();
 
     // type annotations are needed here to know that to decode into.
-    let kitty: Kitty = Decode::decode(&mut res_vec.as_slice()).unwrap();
-    println!("[+] Cute decoded Kitty: {:?}\n", kitty);
+    // let kitty: Kitty = Decode::decode(&mut res_vec.as_slice()).unwrap();
+    // println!("[+] Cute decoded Kitty: {:?}\n", kitty);
+}
+
+
+
+fn subscribe_to_extrinsic_created_event(
+    events_out: &Receiver<String>, 
+) -> Result <String, system::Event> {
+    loop {
+        let event_str = events_out.recv()?;
+        let unhex = hexstr_to_vec(event_str).unwrap();
+        let mut er_enc = unhex.as_slice();
+        let events = Vec::<system::EventRecord<Event, Hash>>::decode(&mut er_enc);
+        if let Ok(evts) = events {
+            for evr in &evts {
+                // println!("{:?}", evr);
+                match &evr.event {
+                    Event::identity(ce) => {
+                        println!("{:?}", &ce);
+                        match &ce {
+                            identity::RawEvent::ExtrinsicTest(account_id, nonce) => {
+                                println!("{}",nonce);
+                                // if *entity_type == created_entity_type
+                                // && (*account_id) == creator_accountid
+                                // {
+                                    return Ok("result");
+                                // };
+                            }
+                            _ => {
+                                // println!("ignoring unsupported event");
+                            }
+                        };
+                    }
+                    Event::system(ce) => {
+                        match &ce {
+                            system::Event::ExtrinsicFailed(err) => {
+                                println!("{:?}", err);
+                                return err;
+                            }
+                            _ => {
+                                println!("{:?}", &ce);
+                                // println!("ignoring unsupported event");
+                            }
+                        };
+                    }
+                    _ => {
+                        // println!("ignoring unsupported event");
+                    }
+                }
+            }
+        }
+    }
 }
