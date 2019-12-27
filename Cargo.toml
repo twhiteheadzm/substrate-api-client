@@ -32,7 +32,7 @@ rev = "584d3752928015d6e3e51333f89a9ac5b90702db"
 package = "pallet-indices"
 default-features=false
 
-[dependencies.runtime_io]
+[dependencies.runtime-io]
 git = "https://github.com/paritytech/substrate"
 rev = "584d3752928015d6e3e51333f89a9ac5b90702db"
 package = "sp-io"
@@ -44,7 +44,7 @@ rev = "584d3752928015d6e3e51333f89a9ac5b90702db"
 package = "frame-metadata"
 default-features=false
 
-[dependencies.runtime_version]
+[dependencies.runtime-version]
 git = "https://github.com/paritytech/substrate"
 rev = "584d3752928015d6e3e51333f89a9ac5b90702db"
 package = "sp-version"
@@ -62,13 +62,13 @@ rev = "584d3752928015d6e3e51333f89a9ac5b90702db"
 package = "frame-system"
 default-features=false
 
-[dependencies.runtime_primitives]
+[dependencies.runtime-primitives]
 git = "https://github.com/paritytech/substrate"
 rev = "584d3752928015d6e3e51333f89a9ac5b90702db"
 package = "sp-runtime"
 default-features=false
 
-[dependencies.runtime_support]
+[dependencies.runtime-support]
 git = "https://github.com/paritytech/substrate"
 rev = "584d3752928015d6e3e51333f89a9ac5b90702db"
 package = "frame-support"
@@ -80,12 +80,12 @@ rev = "584d3752928015d6e3e51333f89a9ac5b90702db"
 package = "sp-std"
 default-features = false
 
-[dev-dependencies.node_runtime]
+[dev-dependencies.node-runtime]
 git = "https://github.com/paritytech/substrate"
 rev = "584d3752928015d6e3e51333f89a9ac5b90702db"
 package = "node-runtime"
 
-[dependencies.node_primitives]
+[dependencies.node-primitives]
 git = "https://github.com/paritytech/substrate"
 rev = "584d3752928015d6e3e51333f89a9ac5b90702db"
 package = "node-primitives"
@@ -113,14 +113,14 @@ default = ["std"]
 std = [
 	"primitives/std",
 	"codec/std",
-    "runtime_primitives/std",
-	"runtime_support/std",
-	"runtime_primitives/std",
+    "runtime-primitives/std",
+	"runtime-support/std",
+	"runtime-primitives/std",
 	"system/std",
 	"balances/std",
-	"runtime_version/std",
+	"runtime-version/std",
 	"metadata/std",
-	"runtime_io/std",
+	"runtime-io/std",
 	"indices/std",
 	"primitives/std",
 	"serde/std",
@@ -133,41 +133,7 @@ std = [
 # need to add this for the app_crypto macro
 full_crypto = []
 
-[[example]]
-name = "example_get_storage"
-path = "src/examples/example_get_storage.rs"
 
-[[example]]
-name = "example_transfer"
-path = "src/examples/example_transfer.rs"
-
-[[example]]
-name = "example_event_callback"
-path = "src/examples/example_event_callback.rs"
-
-[[example]]
-name = "example_generic_extrinsic"
-path = "src/examples/example_generic_extrinsic.rs"
-
-[[example]]
-name = "example_print_metadata"
-path = "src/examples/example_print_metadata.rs"
-
-[[example]]
-name = "example_contract"
-path = "src/examples/example_contract.rs"
-
-[[example]]
-name = "example_custom_storage_struct"
-path = "src/examples/example_custom_storage_struct.rs"
-
-[[example]]
-name = "example_compose_extrinsic_offline"
-path = "src/examples/example_compose_extrinsic_offline.rs"
-
-[[example]]
-name = "example_sudo"
-path = "src/examples/example_sudo.rs"
 
 # [patch.crates-io]
 # ed25519-dalek = { git = "https://github.com/scs/ed25519-dalek.git", branch = "no_std_sgx"}
