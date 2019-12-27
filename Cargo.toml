@@ -129,6 +129,7 @@ std = [
 	"log",
 	"ws",
 	"hex",
+	"node-primitives/std",
 ]
 # need to add this for the app_crypto macro
 full_crypto = []
