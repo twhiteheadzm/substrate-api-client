@@ -13,7 +13,7 @@ serde           = { version = "1.0", optional = true, features = ["derive"] }
 serde_json      = { version = "1.0", optional = true }
 primitive-types = { version = "0.6", default-features = false, features = ["codec"] }
 
-[dependencies.primitives]
+[dependencies.sp-core]
 git = "https://github.com/paritytech/substrate"
 rev = "584d3752928015d6e3e51333f89a9ac5b90702db"
 package = "sp-core"
@@ -62,7 +62,7 @@ rev = "584d3752928015d6e3e51333f89a9ac5b90702db"
 package = "frame-system"
 default-features=false
 
-[dependencies.runtime-primitives]
+[dependencies.sp-runtime]
 git = "https://github.com/paritytech/substrate"
 rev = "584d3752928015d6e3e51333f89a9ac5b90702db"
 package = "sp-runtime"
@@ -74,7 +74,7 @@ rev = "584d3752928015d6e3e51333f89a9ac5b90702db"
 package = "frame-support"
 default-features=false
 
-[dependencies.rstd]
+[dependencies.sp-std]
 git = "https://github.com/paritytech/substrate"
 rev = "584d3752928015d6e3e51333f89a9ac5b90702db"
 package = "sp-std"
@@ -111,25 +111,22 @@ features = ["yaml"]
 [features]
 default = ["std"]
 std = [
-	"primitives/std",
+	"sp-core/std",
 	"codec/std",
-    "runtime-primitives/std",
+    "sp-runtime/std",
 	"runtime-support/std",
-	"runtime-primitives/std",
 	"system/std",
 	"balances/std",
 	"runtime-version/std",
 	"metadata/std",
 	"runtime-io/std",
 	"indices/std",
-	"primitives/std",
 	"serde/std",
 	"serde_json",
 	"env_logger",
 	"log",
 	"ws",
 	"hex",
-	"node-primitives/std",
 ]
 # need to add this for the app_crypto macro
 full_crypto = []
