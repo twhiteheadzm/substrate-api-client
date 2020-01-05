@@ -65,8 +65,11 @@ pub fn on_subscription_msg(msg: Message, _out: Sender, result: ThreadOut<String>
             match value["method"].as_str() {
                 Some("state_storage") => {
                     let _changes = &value["params"]["result"]["changes"];
-                    let _res_str = _changes[0][1].as_str().unwrap().to_string();
-                    result.send(_res_str).unwrap();
+                    let res_str = _changes[0][1].as_str();
+                    match res_str {
+                        Some(res_str) => result.send(res_str.to_string()).unwrap(),
+                        None => error!("unsupported method"),
+                    }
                 }
                 _ => error!("unsupported method"),
             }
