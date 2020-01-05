@@ -140,7 +140,7 @@ impl Arg {
 pub fn parse_metadata(metadata: &RuntimeMetadataPrefixed) -> Vec<Module> {
     let mut mod_vec = Vec::<Module>::new();
     match &metadata.1 {
-        RuntimeMetadata::V9(value) => {
+        RuntimeMetadata::V10(value) => {
             match &value.modules {
                 DecodeDifferent::Decoded(mods) => {
                     let modules = mods;
